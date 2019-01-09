@@ -16,17 +16,14 @@ public class TileMapController : MonoBehaviour
     public void startAutoGenMap(){
         Debug.Log("starting autogeneration process!");
 
-        // TESTING:
-
 
         // set variables
         tilemap = gameObject.GetComponent<Tilemap>();
-        int halfX = 19;  // in terms of cells
-        int halfY = 8;   // in terms of cells
+        int halfX = 20;   // x-boundary, in terms of cells
+        int halfY = 20;   // y-boundary, in terms of cells
 
+        // auto-generate map
         addWall(halfX, halfY);
-        
-
 
 
     }
@@ -55,10 +52,15 @@ public class TileMapController : MonoBehaviour
         // TODO: NOTICE ME SENPAI
 
 
+
+
+
+
         return(tilePositions);
     }
 
-    // USAGE: prints input array of positions as tiles
+
+    // USAGE: prints input array of positions as tiles on current tilemap
     public void arrayToTiles(Vector3Int[] arr, Tile t){
 
 
