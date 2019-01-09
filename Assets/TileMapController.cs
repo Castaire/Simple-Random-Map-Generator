@@ -19,8 +19,8 @@ public class TileMapController : MonoBehaviour
 
         // set variables
         tilemap = gameObject.GetComponent<Tilemap>();
-        int halfX = 20;   // x-boundary, in terms of cells
-        int halfY = 20;   // y-boundary, in terms of cells
+        int halfX = 10;   // x-boundary, in terms of cells
+        int halfY = 10;   // y-boundary, in terms of cells
 
         // auto-generate map
         addWall(halfX, halfY);

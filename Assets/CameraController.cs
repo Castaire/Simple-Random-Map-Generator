@@ -12,13 +12,17 @@ public class CameraController : MonoBehaviour
 
 	void Start(){
 		sprite = GameObject.Find("Player");
-		spriteOffsetToCamera = transform.position - sprite.transform.position;
+		spriteOffsetToCamera.Set(0, 0, -10);
 	}
 
 	// NOTE:  calls AFTER Update() per frame
-	void LateUpdate(){
-		transform.position = sprite.transform.position + spriteOffsetToCamera;
-	}
+	void LateUpdate()
+    {
+        sprite = GameObject.Find("Player");
+        transform.position = sprite.transform.position + spriteOffsetToCamera;
+        print("moving camera to" + transform.position + "using" + sprite.transform.position);
+
+    }
 
 
 }

@@ -35,7 +35,7 @@ public class Main : MonoBehaviour
         player = new GameObject("Player");
         player.transform.position = initPlayerLocation;
         player.AddComponent<MiniSpriteController>();
-        player.AddComponent<Rigidbody2D>();
+        //player.AddComponent<Rigidbody2D>();
 
         // attach 'sprite' to 'player'
         playerSpriteRenderer = player.AddComponent<SpriteRenderer>();
