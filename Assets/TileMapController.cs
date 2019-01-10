@@ -15,56 +15,43 @@ public class TileMapController : MonoBehaviour
 
     public void startAutoGenMap(){
         Debug.Log("starting autogeneration process!");
-
-
+        
         // set variables
         tilemap = gameObject.GetComponent<Tilemap>();
-        int halfX = 10;   // x-boundary, in terms of cells
-        int halfY = 10;   // y-boundary, in terms of cells
 
-        // auto-generate map
-        addWall(halfX, halfY);
+        HashSet<Vector2> cells = generateCellArray();
 
-
-    }
-
-    // USAGE: adds 1-depth walls to the grid within canvass
-    // NOTE:  grid is centered at cell position (0, 0, 0)
-    public void addWall(int halfX, int halfY){
-
-        // top / bottom boundary
-        for(int i = -halfX; i <= halfX; i++){
-            tilemap.SetTile(new Vector3Int(i, -halfY, 0), tile);
-            tilemap.SetTile(new Vector3Int(i, halfY, 0), tile);
-        }
-
-        // left / right boundary
-        for(int i = -halfY; i <= halfY; i++){
-            tilemap.SetTile(new Vector3Int(-halfX, i, 0), tile);
-            tilemap.SetTile(new Vector3Int(halfX, i, 0), tile);
+        foreach(Vector2 cell in cells)
+        {
+            addCell(Mathf.FloorToInt(cell.x), Mathf.FloorToInt(cell.y));
         }
     }
 
-    public Vector3Int[] generateRandomPositionArray(){
-
-        Vector3Int[] tilePositions = new Vector3Int[4];
-
-        // TODO: NOTICE ME SENPAI
-
-
-
-
-
-
-        return(tilePositions);
+    public void addCell(int x, int y)
+    {
+        tilemap.SetTile(new Vector3Int(x, y, 0), tile);
     }
+    
+    public HashSet<Vector2> generateCellArray()
+    {
+        HashSet<Vector2> set = new HashSet<Vector2>();
 
+        int width = 14;
+        int height = 8;
 
-    // USAGE: prints input array of positions as tiles on current tilemap
-    public void arrayToTiles(Vector3Int[] arr, Tile t){
+        for(int i = -width; i <= width; i++)
+        {
+            set.Add(new Vector2(i, -height));
+            set.Add(new Vector2(i, height));
+        }
 
+        for(int i = 1-height; i < height; i++)
+        {
+            set.Add(new Vector2(-width, i));
+            set.Add(new Vector2(width, i));
+        }
 
-
+        return set;
     }
 
 
