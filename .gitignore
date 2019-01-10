@@ -27,6 +27,7 @@ ExportedObj/
 *.sln
 *.user
 .vscode/*
+.vs/*
 *.unityproj
 *.booproj
 
