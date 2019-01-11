@@ -15,6 +15,9 @@ public class mainController : MonoBehaviour
 
 		Vector3 spriteMove = new Vector3(Input.GetAxis("Horizontal"), 
 								 Input.GetAxis("Vertical"), 0);
+        if (spriteMove == Vector3.zero)
+            return;
+
 		transform.position += spriteMove * speed * Time.deltaTime;
 
 		// 
