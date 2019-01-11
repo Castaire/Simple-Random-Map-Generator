@@ -18,9 +18,9 @@ public class mainController : MonoBehaviour
 		transform.position += spriteMove * speed * Time.deltaTime;
 
 		// 
-		Vector3 posDiff = transform.position - origPos;
+		Vector3 posDiff = origPos - transform.position;
 		float targetAngle = Mathf.Atan(posDiff.y / posDiff.x) * 180 / Mathf.PI + 90;
-        if (posDiff.x > 0){
+        if (posDiff.x < 0){
             targetAngle = 180 + targetAngle;
         }
         targetAngle = (int)targetAngle;
