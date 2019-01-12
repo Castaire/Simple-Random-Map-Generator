@@ -20,8 +20,6 @@ public class CameraController : MonoBehaviour
     {
         sprite = GameObject.Find("Player"); 		// wait, didn't we already do this in Start() ???
         transform.position = sprite.transform.position + spriteOffsetToCamera;
-        print("moving camera to" + transform.position + "using" + sprite.transform.position);
-
     }
 
 
