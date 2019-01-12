@@ -4,15 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-// USAGE: 		extremely similar to Assets/MiniSpriteController
+// USAGE: 		sprite simple movement and rotation
 public class mainController : MonoBehaviour
 {	
-	private float rotationSpeed = 5.0f;
+
+	private float rotationSpeed = 4.0f;
 	private float speed = 10.0f;
+
 
 	void Update(){
 		Vector3 origPos = transform.position;
 
+        // movement
 		Vector3 spriteMove = new Vector3(Input.GetAxis("Horizontal"), 
 								 Input.GetAxis("Vertical"), 0);
         if (spriteMove == Vector3.zero)
@@ -20,7 +23,7 @@ public class mainController : MonoBehaviour
 
 		transform.position += spriteMove * speed * Time.deltaTime;
 
-		// 
+        // rotation
 		Vector3 posDiff = origPos - transform.position;
 		float targetAngle = Mathf.Atan(posDiff.y / posDiff.x) * 180 / Mathf.PI + 90;
         if (posDiff.x < 0){
@@ -28,13 +31,12 @@ public class mainController : MonoBehaviour
         }
         targetAngle = (int)targetAngle;
 
-        float objAngle = transform.rotation.eulerAngles.z;
+        float currentAngle = transform.rotation.eulerAngles.z;
 
-        rotate(quickestRotation(objAngle, targetAngle));
+        rotate(quickestRotation(currentAngle, targetAngle));
 	}
 
 
-	// USAGE: 	ported from Nocturne =.=|||
 	public void rotate(float horizontal){
 		Vector3 temp = new Vector3(0, 0, -1 * rotationSpeed * horizontal);
         if (horizontal != 0)
@@ -43,9 +45,8 @@ public class mainController : MonoBehaviour
 	}
 
 
-	// find quickest path for thing at angle1 to reach angle2
-    // if true, turn clockwise, otherwise turn counterclockwise
-    //public static bool quickestRotation1(float angle1, float angle2)
+    // USAGE:   finds quickest past between angle1 and angle
+    //          returns 1 for clockwise rotation, -1f for counterclockwise
     public float quickestRotation(float angle1, float angle2)
     {
         if (angle1 > 180)

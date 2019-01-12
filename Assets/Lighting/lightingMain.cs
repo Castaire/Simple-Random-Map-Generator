@@ -7,12 +7,10 @@ using UnityEngine.UI;
 public class lightingMain : MonoBehaviour
 {
     
-	
+	public GameObject mainSprite;
 
-
-    
     void Start()
     {
-        
+    	
     }
 }
