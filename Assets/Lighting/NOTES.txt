@@ -1,0 +1,60 @@
+
+=======================
+=== NOTES / REMARKS ===
+=======================
+
+// NOTE: our base size is 32 x 32 pixels -> do not go lower than this
+		 if you are creating larger sprites, please have its size be a multiple of
+		 	32 x 32 !!!
+
+
+
+// NOTE: when importing new png sprites / tile resources, do the following:
+	1. put it in the Resources folder
+	2. click on the resource and set 'Pixels per Unit' to 32
+
+		^ especially necessary for tiles because otherwise it will NOT fill up a 
+			tile cell properly when made into a tile and added to the main tilemap
+
+
+
+// Z-positioning guide //
+
+z = -5 : camera(s) ONLY
+z = -1 : light sources ONLY (even if they are attached to sprites)
+z = 0  : sprites
+z = 1  : tiles and tilemap
+
+	*** it is kind of difficult to have these z-values set as individual layers,
+		as layers in Unity tends to correspond to differences in the y-value 
+		(and not the z-value) ***
+
+
+
+// Q: how to make 2D sprites / objects react to lighting?
+   A: add 'sprite_lightreact' material in the 'Materials' folder to the sprite / object
+   		- mainly, you just need a material that has its shader set to 'Sprite/Diffuse'
+
+
+
+// Tilemap Tips //
+	- Open the 'Tile Palette' from Window->2D->Tile Palette
+	- Drag in 32x32 px tile resources (usually in .png)
+
+	- To add tiles to tilemap:
+		i) 		select tile in tile palette
+		ii) 	select the 'brush' option in the palette (or press 'B')
+		iii)	go to the Scene window and select the 'Grid' object
+		iv) 	hold the left mouse button to drag and "paint" the tile on :)
+	
+	- To delete tiles in the tilemap:
+		^ same as steps i) to iv) above, EXCEPT: 
+			- select the 'eraser' option in the palette (or press 'D')
+
+
+
+
+
+
+
+

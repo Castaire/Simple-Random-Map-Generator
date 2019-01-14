@@ -37,6 +37,7 @@ public class mainController : MonoBehaviour
 	}
 
 
+    // USAGE:   
 	public void rotate(float horizontal){
 		Vector3 temp = new Vector3(0, 0, -1 * rotationSpeed * horizontal);
         if (horizontal != 0)
@@ -64,5 +65,9 @@ public class mainController : MonoBehaviour
             	return(1f);
         }
     }
+
+
+
+
 
 }
