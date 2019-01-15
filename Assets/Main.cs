@@ -38,6 +38,8 @@ public class Main : MonoBehaviour
         player.AddComponent<Rigidbody2D>();
         player.AddComponent<BoxCollider2D>();
 
+        player.GetComponent<BoxCollider2D>().size = new Vector2(0.3f, 0.3f);
+
         player.GetComponent<Rigidbody2D>().gravityScale = 0;
 
 

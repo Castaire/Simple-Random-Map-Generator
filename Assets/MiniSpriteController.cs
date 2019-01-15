@@ -23,9 +23,25 @@ public class MiniSpriteController : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = new Vector2(brake * actualVelocity.x, brake * actualVelocity.y);
             print("reset velocity");
         }
-        GetComponent<Rigidbody2D>().velocity = spriteMove * speed * Time.deltaTime;
-        //GetComponent<Rigidbody2D>().AddForce(spriteMove * speed * Time.deltaTime);
+        Rigidbody2D body = GetComponent<Rigidbody2D>();
 
-        //print("current position" + transform.position);
+        body.velocity = spriteMove * speed * Time.deltaTime;
+
+        float angVel = body.angularVelocity;
+
+        float rotation = body.rotation;
+
+        if(angVel != 0)
+        {
+            body.angularVelocity = angVel * 0.8f;
+        }
+
+        if(rotation != 0)
+        {
+            body.rotation = rotation * 0.8f;
+        }
+
+        print("rotation speed: " + body.angularVelocity);
+
     }
 }
