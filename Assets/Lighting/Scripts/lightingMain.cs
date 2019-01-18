@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.UI;
 
 public class lightingMain : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class lightingMain : MonoBehaviour
 
     void Start()
     {
-    	
+    	// add lighting features
+    	//mainSprite.AddComponent<lightPulse>();	
     }
 }
