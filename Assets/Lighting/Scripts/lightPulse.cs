@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEditor;
 
 public class lightPulse : MonoBehaviour 
 {
@@ -10,35 +11,23 @@ public class lightPulse : MonoBehaviour
 	private GameObject pulseObject;
 	private ParticleSystem pulseSystem;
 
-
-
-	void Start(){
+	void Start()
+	{
 		Debug.Log("added lightpulse to " + gameObject.name);
+		Debug.Log("Press 'p' to emit 1 pulse");
+		
+		GameObject p = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Lighting/Prefabs/pulse_ps.prefab", 
+						typeof(GameObject));
+		pulseObject = Instantiate(p, gameObject.transform.position, Quaternion.identity, gameObject.transform);
 
-		pulseObject = new GameObject("pulseObject");
-		pulseSystem = pulseObject.AddComponent<ParticleSystem>();
-		setupPulseSystem();
+		pulseSystem = pulseObject.GetComponent<ParticleSystem>();
 	}
 
 	void Update()
 	{	
 		if(Input.GetKeyUp(KeyCode.P)){
-			emitPulse(gameObject.transform.position);
+			Debug.Log("emitting pulse!");
+			pulseSystem.Emit(1);
 		}
-	}
-
-	private void setupPulseSystem(){
-		Debug.Log("setting up pulse system");
-
-		// setup main module
-
-
-
-	}
-
-	public void emitPulse(Vector3 pos){
-		Debug.Log("emitting pulse!");
-
-
 	}
 }
