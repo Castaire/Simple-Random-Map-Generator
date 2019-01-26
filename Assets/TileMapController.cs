@@ -21,9 +21,19 @@ public class TileMapController : MonoBehaviour
 
         HashSet<Vector2> cells = generateCellArray();
 
-        cells.UnionWith(genBlock(0, 2, 3, 5));
+        cells.UnionWith(genBlock(-11, 0, 6, 6));
+        cells.UnionWith(genBlock(3, 0, 6, 6));
+        cells.UnionWith(genBlock(-2, -4, 4, 2));
 
-        foreach(Vector2 cell in cells)
+        clearBlock(-10, 1, 4, 4, cells);
+        clearBlock(4, 1, 4, 4, cells);
+
+        clearBlock(-1, -4, 2, 1, cells);
+
+        cells.UnionWith(genBlock(-8, 3, 2, 2));
+        cells.UnionWith(genBlock(6, 3, 2, 2));
+
+        foreach (Vector2 cell in cells)
         {
             addCell(Mathf.FloorToInt(cell.x), Mathf.FloorToInt(cell.y));
         }
@@ -65,6 +75,19 @@ public class TileMapController : MonoBehaviour
             for(int j = 0; j < h; j++)
             {
                 set.Add(new Vector2(x + i, y + j));
+            }
+        }
+
+        return set;
+    }
+
+    public HashSet<Vector2> clearBlock(int x, int y, int w, int h, HashSet<Vector2> set)
+    {
+        for (int i = 0; i < w; i++)
+        {
+            for (int j = 0; j < h; j++)
+            {
+                set.Remove(new Vector2(x + i, y + j));
             }
         }
 
