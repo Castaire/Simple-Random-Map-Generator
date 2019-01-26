@@ -3,6 +3,22 @@
 === NOTES / REMARKS ===
 =======================
 
+// COLOR GUIDE //
+
+> main sprite :
+	- inner ring : new Color(255, 255, 255, 255);	// plain white
+	- bouncer 	 : new Color(164, 56, 99, 255);	 	// wine burgundy
+	- atom 		 : new Color(255, 206, 0 , 255);  	// bright orange
+
+> main sprite lighting : 
+	- head light : 	new Color(255, 0, 69, 255); 		// red-pink
+	- rings 	 : 	new Color(0, 34, 255); 				// blue
+
+
+
+
+-------------------------------------------------------------------------------
+
 // NOTE: our base size is 32 x 32 pixels -> do not go lower than this
 		 if you are creating larger sprites, please have its size be a multiple of
 		 	32 x 32 !!!
