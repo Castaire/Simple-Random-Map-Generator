@@ -9,7 +9,11 @@ public class TileMapController : MonoBehaviour
 
     public Tile tile;
 
-    private Tilemap tilemap;
+    public Tile accessibleTile;
+    public Tile inaccessibleTile;
+    public Tile pathTile;
+
+    private Tilemap tilemap = null;
     private Vector3Int tileMapSize;
 
 
@@ -21,7 +25,9 @@ public class TileMapController : MonoBehaviour
 
         HashSet<Vector2> cells = generateCellArray();
 
-        cells.UnionWith(genBlock(0, 2, 3, 5));
+        cells.UnionWith(genBlock(-1, -7, 4, 15));
+        cells.UnionWith(genBlock(-13, -2, 27, 2));
+        cells = clearBlock(0, 2, 2, 4, cells);
 
         foreach(Vector2 cell in cells)
         {
@@ -29,9 +35,41 @@ public class TileMapController : MonoBehaviour
         }
     }
 
+    public Vector3 getPos(int x, int y)
+    {
+        if(tilemap != null)
+            return tilemap.CellToWorld(new Vector3Int(x, y, 0));
+        else
+        {
+            print("ERROR: attempted to retrieve position with invalid tilemap");
+            return new Vector3(0, 0, 0);
+        }
+    }
+
     public void addCell(int x, int y)
     {
         tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+    }
+
+    public void addOther(int x, int y, int type)
+    {
+        switch(type)
+        {
+            case 0:
+                tilemap.SetTile(new Vector3Int(x, y, 0), accessibleTile);
+                break;
+            case 1:
+                tilemap.SetTile(new Vector3Int(x, y, 0), inaccessibleTile);
+                break;
+            case 2:
+                tilemap.SetTile(new Vector3Int(x, y, 0), pathTile);
+                break;
+        }
+    }
+
+    public void publicCheckPath(Vector3Int start, Vector3Int pos)
+    {
+
     }
     
     public HashSet<Vector2> generateCellArray()
@@ -71,6 +109,23 @@ public class TileMapController : MonoBehaviour
         return set;
     }
 
+    public HashSet<Vector2> clearBlock(int x, int y, int w, int h, HashSet<Vector2> cells)
+    {
+        for (int i = 0; i < w; i++)
+        {
+            for (int j = 0; j < h; j++)
+            {
+                cells.Remove(new Vector2(x + i, y + j));
+            }
+        }
 
+        return cells;
+
+    }
+
+    public void checkPath(Vector2 startpos, Vector2 endpos)
+    {
+
+    }
 
 }

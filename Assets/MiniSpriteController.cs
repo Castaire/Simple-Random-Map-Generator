@@ -30,7 +30,7 @@ public class MiniSpriteController : MonoBehaviour
         float angVel = body.angularVelocity;
 
         float rotation = body.rotation;
-
+         
         if(angVel != 0)
         {
             body.angularVelocity = angVel * 0.8f;
@@ -40,8 +40,5 @@ public class MiniSpriteController : MonoBehaviour
         {
             body.rotation = rotation * 0.8f;
         }
-
-        print("rotation speed: " + body.angularVelocity);
-
     }
 }
