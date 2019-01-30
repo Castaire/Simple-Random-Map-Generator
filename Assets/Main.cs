@@ -42,7 +42,13 @@ public class Main : MonoBehaviour
 
         initPlayerLocation = tileMapController.getPos(-12, 6);
 
-        tileMapController.addOther(-12, 6, 2);
+        Vector2Int start = new Vector2Int(-12, 6);
+        Vector2Int end = new Vector2Int(-8, 5);
+
+        tileMapController.addOther(start.x, start.y, 2);
+        tileMapController.addOther(end.x, end.y, 2);
+
+        tileMapController.checkPath(start, end);
 
         // create 'player' game object
         player = new GameObject("Player");

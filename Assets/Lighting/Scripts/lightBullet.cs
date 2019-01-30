@@ -1,9 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-<<<<<<< HEAD
-
-=======
->>>>>>> 7db6078f48f03b7df2322624b7027ec7f26828d4
 using UnityEditor;
 using UnityEngine;
 
@@ -28,10 +24,6 @@ public class lightBullet : MonoBehaviour
     
     void Update()
     {   
-        if(bbb != null){
-            Debug.Log(bbb.transform.position.x + ", " + bbb.transform.position.y + ", " + bbb.transform.position.z);
-        }
-
         if(Input.GetKeyUp(KeyCode.E)){
             fireBullet();
         }

@@ -9,6 +9,9 @@ public class TileMapController : MonoBehaviour
 
     public Tile tile;
 
+    int width = 14;
+    int height = 8;
+
     public Tile accessibleTile;
     public Tile inaccessibleTile;
     public Tile pathTile;
@@ -16,26 +19,29 @@ public class TileMapController : MonoBehaviour
     private Tilemap tilemap = null;
     private Vector3Int tileMapSize;
 
+    private HashSet<Vector2Int> cells;
 
     public void startAutoGenMap(){
-        Debug.Log("starting autogeneration process!");
+        //Debug.Log("starting autogeneration process!");
         
         // set variables
         tilemap = gameObject.GetComponent<Tilemap>();
 
-        HashSet<Vector2> cells = generateCellArray();
+        cells = generateCellArray();
         
         cells.UnionWith(genBlock(-1, -7, 4, 15));
         cells.UnionWith(genBlock(-13, -2, 27, 2));
+
         cells = clearBlock(0, 2, 2, 4, cells);
+        cells = clearBlock(-6, -2, 1, 2, cells);
 
-        clearBlock(-10, 1, 4, 4, cells);
-        clearBlock(4, 1, 4, 4, cells);
+        //clearBlock(-10, 1, 4, 4, cells);
+        //clearBlock(4, 1, 4, 4, cells);
 
-        clearBlock(-1, -4, 2, 1, cells);
+        //clearBlock(-1, -4, 2, 1, cells);
 
-        cells.UnionWith(genBlock(-8, 3, 2, 2));
-        cells.UnionWith(genBlock(6, 3, 2, 2));
+        //cells.UnionWith(genBlock(-8, 3, 2, 2));
+        //cells.UnionWith(genBlock(6, 3, 2, 2));
 
         foreach (Vector2 cell in cells)
         {
@@ -75,42 +81,42 @@ public class TileMapController : MonoBehaviour
         }
     }
 
-    public void publicCheckPath(Vector3Int start, Vector3Int pos)
+    public void checkPath(Vector2Int start, Vector2Int pos)
     {
+        int[,] heuristics = new int[width, height];
+        int max = 10000;
 
+        HashSet<Vector2Int> toExamine = new HashSet<Vector2Int>();
     }
     
-    public HashSet<Vector2> generateCellArray()
+    public HashSet<Vector2Int> generateCellArray()
     {
-        HashSet<Vector2> set = new HashSet<Vector2>();
-
-        int width = 14;
-        int height = 8;
-
+        HashSet<Vector2Int> set = new HashSet<Vector2Int>();
+        
         for(int i = -width; i <= width; i++)
         {
-            set.Add(new Vector2(i, -height));
-            set.Add(new Vector2(i, height));
+            set.Add(new Vector2Int(i, -height));
+            set.Add(new Vector2Int(i, height));
         }
 
         for(int i = 1-height; i < height; i++)
         {
-            set.Add(new Vector2(-width, i));
-            set.Add(new Vector2(width, i));
+            set.Add(new Vector2Int(-width, i));
+            set.Add(new Vector2Int(width, i));
         }
 
         return set;
     }
 
-    public HashSet<Vector2> genBlock(int x, int y, int w, int h)
+    public HashSet<Vector2Int> genBlock(int x, int y, int w, int h)
     {
-        HashSet<Vector2> set = new HashSet<Vector2>();
+        HashSet<Vector2Int> set = new HashSet<Vector2Int>();
 
         for (int i = 0; i < w; i++)
         {
             for(int j = 0; j < h; j++)
             {
-                set.Add(new Vector2(x + i, y + j));
+                set.Add(new Vector2Int(x + i, y + j));
             }
         }
 
@@ -118,21 +124,16 @@ public class TileMapController : MonoBehaviour
     }
 
 
-    public HashSet<Vector2> clearBlock(int x, int y, int w, int h, HashSet<Vector2> cells)
+    public HashSet<Vector2Int> clearBlock(int x, int y, int w, int h, HashSet<Vector2Int> set)
     {
         for (int i = 0; i < w; i++)
         {
             for (int j = 0; j < h; j++)
             {
-                cells.Remove(new Vector2(x + i, y + j));
+                set.Remove(new Vector2Int(x + i, y + j));
             }
         }
-        return cells;
-    }
-
-    public void checkPath(Vector2 startpos, Vector2 endpos)
-    {
-
+        return set;
     }
 
 }

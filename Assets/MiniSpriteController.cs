@@ -21,7 +21,7 @@ public class MiniSpriteController : MonoBehaviour
             Vector2 actualVelocity = GetComponent<Rigidbody2D>().velocity;
             float brake = 0.01f;
             GetComponent<Rigidbody2D>().velocity = new Vector2(brake * actualVelocity.x, brake * actualVelocity.y);
-            print("reset velocity");
+            //print("reset velocity");
         }
         Rigidbody2D body = GetComponent<Rigidbody2D>();
 
