@@ -13,7 +13,7 @@ public class lightPulse : MonoBehaviour
 	void Start()
 	{
 		Debug.Log("added lightpulse to " + gameObject.name);
-		Debug.Log("USAGE: Press 'q' to emit 1 pulse");
+		Debug.Log("USAGE: Press Q to emit 1 pulse");
 
 		GameObject p = (GameObject)AssetDatabase.LoadAssetAtPath("Assets/Lighting/Prefabs/pulse_ps.prefab", 
 						typeof(GameObject));

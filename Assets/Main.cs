@@ -29,7 +29,20 @@ public class Main : MonoBehaviour
         
         tileMapController = mainTileMap.GetComponent<TileMapController>();
 
-        autoGenButton.onClick.AddListener(() => tileMapController.startAutoGenMap());
+        autoGenButton.onClick.AddListener(() => InitPlayerAndTiles());
+
+
+    }
+
+    void InitPlayerAndTiles()
+    {
+        autoGenButton.enabled = false;
+
+        tileMapController.startAutoGenMap();
+
+        initPlayerLocation = tileMapController.getPos(-12, 6);
+
+        tileMapController.addOther(-12, 6, 2);
 
         // create 'player' game object
         player = new GameObject("Player");
@@ -45,11 +58,9 @@ public class Main : MonoBehaviour
 
         // attach 'sprite' to 'player'
         playerSpriteRenderer = player.AddComponent<SpriteRenderer>();
-        playerSprite = Sprite.Create(spriteTexture, 
+        playerSprite = Sprite.Create(spriteTexture,
                                      new Rect(0.0f, 0.0f, spriteTexture.width, spriteTexture.height),
                                      new Vector2(0.5f, 0.5f), 100.0f);
         playerSpriteRenderer.sprite = playerSprite;
-
-
     }
 }

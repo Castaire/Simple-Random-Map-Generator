@@ -19,7 +19,8 @@ public class CameraController : MonoBehaviour
 	void LateUpdate()
     {
         sprite = GameObject.Find("Player"); 		// wait, didn't we already do this in Start() ???
-        transform.position = sprite.transform.position + spriteOffsetToCamera;
+        if(sprite != null)
+            transform.position = sprite.transform.position + spriteOffsetToCamera;
     }
 
 

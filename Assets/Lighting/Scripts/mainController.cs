@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-
 using UnityEngine;
 
 
@@ -20,7 +19,6 @@ public class mainController : MonoBehaviour
 								 Input.GetAxis("Vertical"), 0);
         if (spriteMove == Vector3.zero)
             return;
-
 		transform.position += spriteMove * speed * Time.deltaTime;
 
         // rotation
@@ -65,9 +63,4 @@ public class mainController : MonoBehaviour
             	return(1f);
         }
     }
-
-
-
-
-
 }
