@@ -47,7 +47,7 @@ public class Main : MonoBehaviour
 
         tileMapController.addOther(start.x, start.y, 2);
         tileMapController.addOther(end.x, end.y, 2);
-
+        
         tileMapController.checkPath(start, end);
 
         // create 'player' game object

@@ -8,8 +8,8 @@ public class TileMapController : MonoBehaviour
 {
 
     public Tile tile;
-
-    int width = 8;
+    
+    int width = 14;
     int height = 8;
 
     public Tile accessibleTile;
@@ -41,7 +41,6 @@ public class TileMapController : MonoBehaviour
         //clearBlock(4, 1, 4, 4, cells);
 
         //clearBlock(-1, -4, 2, 1, cells);
-
         //cells.UnionWith(genBlock(-8, 3, 2, 2));
         //cells.UnionWith(genBlock(6, 3, 2, 2));
 
@@ -82,7 +81,7 @@ public class TileMapController : MonoBehaviour
                 break;
         }
     }
-
+    
     public int distBetweenNodes(Vector2Int node, Vector2Int goal)
     {
         return Mathf.Abs(goal.y - node.y) + Mathf.Abs(goal.x - node.x);
