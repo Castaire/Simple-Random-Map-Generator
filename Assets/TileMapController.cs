@@ -29,7 +29,12 @@ public class TileMapController : MonoBehaviour
 
         cells = generateCellArray();
 
-        cells.UnionWith(genBlock(2, 2, 2, 3));
+        cells.UnionWith(genBlock(3, 1, 2, height - 2));
+        cells.UnionWith(genBlock(6, 2, 2, height - 2));
+        cells.UnionWith(genBlock(11, 3, 1, 3));
+        cells.UnionWith(genBlock(12, 3, 2, 1));
+        cells.UnionWith(genBlock(12, 5, 1, 1));
+
 
         //cells.UnionWith(genBlock(-1, -7, 4, 15));
         //cells.UnionWith(genBlock(-13, -2, 27, 2));
@@ -151,10 +156,13 @@ public class TileMapController : MonoBehaviour
             Vector2Int current = start;
 
             // find cell with loweset fScore in openSet
-            foreach(Vector2Int cell in openSet)
+            foreach (Vector2Int cell in openSet)
             {
                 if (fScore[cell.x, cell.y] < currentScore)
+                {
+                    currentScore = fScore[cell.x, cell.y];
                     current = cell;
+                }
             }
 
             print("lowest fScore cell: [" + current.x + "," + current.y + "]");
@@ -172,6 +180,21 @@ public class TileMapController : MonoBehaviour
                         s += gScore[j, i] + "   ";
                     }
                     print(s);
+                }
+
+                int temp = 0;
+                while(current != start)
+                {
+                    temp++;
+                    if (temp > 200)
+                    {
+                        print("loop exceeded");
+                        return;
+                    }
+
+                    current = cameFrom[current.x, current.y];
+                    addOther(current.x, current.y, 0);
+                    print("came from [" + current.x + "," + current.y + "]");
                 }
 
                 return;
