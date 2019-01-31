@@ -20,6 +20,7 @@ public class lightingMain : MonoBehaviour
     	// add lighting features
     	bouncer.AddComponent<lightPulse>();
     	antennaLight.AddComponent<antennaController>();
+    	mainSprite.AddComponent<lightBullet>();
 
     }
 }

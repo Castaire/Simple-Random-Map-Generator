@@ -39,10 +39,16 @@ public class Main : MonoBehaviour
         autoGenButton.enabled = false;
 
         tileMapController.startAutoGenMap();
+        
+        initPlayerLocation = tileMapController.getPos(1, 1);
 
-        initPlayerLocation = tileMapController.getPos(-12, 6);
+        Vector2Int start = new Vector2Int(1, 1);
+        Vector2Int end = new Vector2Int(4, 4);
 
-        tileMapController.addOther(-12, 6, 2);
+        tileMapController.addOther(start.x, start.y, 2);
+        tileMapController.addOther(end.x, end.y, 2);
+
+        tileMapController.checkPath(start, end);
 
         // create 'player' game object
         player = new GameObject("Player");
