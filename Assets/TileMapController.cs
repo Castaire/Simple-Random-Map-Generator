@@ -9,8 +9,8 @@ public class TileMapController : MonoBehaviour
 
     public Tile tile;
     
-    int width = 14;
-    int height = 8;
+    private int width = 14;
+    private int height = 8;
 
     public Tile accessibleTile;
     public Tile inaccessibleTile;
@@ -21,6 +21,13 @@ public class TileMapController : MonoBehaviour
 
     private HashSet<Vector2Int> cells;
 
+    public void startAutoGenMap(int w, int h)
+    {
+        width = w;
+        height = h;
+        startAutoGenMap();
+    }
+
     public void startAutoGenMap(){
         //Debug.Log("starting autogeneration process!");
         
@@ -29,11 +36,18 @@ public class TileMapController : MonoBehaviour
 
         cells = generateCellArray();
 
-        cells.UnionWith(genBlock(3, 1, 2, height - 2));
-        cells.UnionWith(genBlock(6, 2, 2, height - 2));
-        cells.UnionWith(genBlock(11, 3, 1, 3));
-        cells.UnionWith(genBlock(12, 3, 2, 1));
-        cells.UnionWith(genBlock(12, 5, 1, 1));
+        //cells.UnionWith(genBlock(3, 1, 2, height - 2));
+        //cells.UnionWith(genBlock(6, 2, 2, height - 2));
+        //cells.UnionWith(genBlock(11, 3, 1, 3));
+        //cells.UnionWith(genBlock(12, 3, 2, 1));
+        //cells.UnionWith(genBlock(12, 5, 1, 1));
+
+
+        cells.UnionWith(genCircle(4, 4, 2));
+
+        cells.UnionWith(genCircle(8, 8, 4));
+
+        cells.UnionWith(genCircle(16, 16, 8));
 
 
         //cells.UnionWith(genBlock(-1, -7, 4, 15));
@@ -165,12 +179,13 @@ public class TileMapController : MonoBehaviour
                 }
             }
 
-            print("lowest fScore cell: [" + current.x + "," + current.y + "]");
+            //print("lowest fScore cell: [" + current.x + "," + current.y + "]");
 
             if(current == goal)
             {
                 print("checkPath: found goal! YAY");
 
+                /*
                 string s;
                 for(int i = height-1; i > 0; i--)
                 {
@@ -180,7 +195,7 @@ public class TileMapController : MonoBehaviour
                         s += gScore[j, i] + "   ";
                     }
                     print(s);
-                }
+                }*/
 
                 int temp = 0;
                 while(current != start)
@@ -194,7 +209,7 @@ public class TileMapController : MonoBehaviour
 
                     current = cameFrom[current.x, current.y];
                     addOther(current.x, current.y, 0);
-                    print("came from [" + current.x + "," + current.y + "]");
+                    //print("came from [" + current.x + "," + current.y + "]");
                 }
 
                 return;
@@ -224,8 +239,8 @@ public class TileMapController : MonoBehaviour
 
             foreach (Vector2Int neighbour in neighbours)
             {
-                print("current [" + current.x + "," + current.y + "] neighbour is ["
-                    + neighbour.x + "," + neighbour.y + "]: " + distBetweenNodes(start, neighbour));
+                //print("current [" + current.x + "," + current.y + "] neighbour is ["
+                //    + neighbour.x + "," + neighbour.y + "]: " + distBetweenNodes(start, neighbour));
 
                 // don't re-evaluate neighbours
                 if (closedSet.Contains(neighbour))
@@ -265,6 +280,18 @@ public class TileMapController : MonoBehaviour
         }
 
         return set;
+    }
+
+    public HashSet<Vector2Int> genCircle(int x, int y, int r)
+    {
+        HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
+        for(int i = 1-r; i < r; i++)
+        {
+            int h = Mathf.FloorToInt(Mathf.Sqrt(r*r - i*i));
+            cells.UnionWith(genBlock(x + i, y - h, 1, 2 * h));
+        }
+
+        return cells;
     }
 
     public HashSet<Vector2Int> genBlock(int x, int y, int w, int h)

@@ -38,12 +38,36 @@ public class Main : MonoBehaviour
     {
         autoGenButton.enabled = false;
 
-        tileMapController.startAutoGenMap();
-        
+        //tileMapController.startAutoGenMap();
+
+        int width = 40;
+        int height = 25;
+
+        tileMapController.startAutoGenMap(width, height);
+
         initPlayerLocation = tileMapController.getPos(1, 1);
 
         Vector2Int start = new Vector2Int(1, 1);
-        Vector2Int end = new Vector2Int(12, 4);
+
+        Vector2Int end = new Vector2Int();
+
+        int dist = -1;
+        int hype = Mathf.FloorToInt(Mathf.Sqrt(width * width + height * height));
+        while(dist < 0)
+        {
+            int x = Mathf.FloorToInt(Random.Range(width * 0.1f, width * 0.9f));
+            int y = Mathf.FloorToInt(Random.Range(height * 0.1f, height * 0.9f));
+
+            int z = Mathf.FloorToInt(Mathf.Sqrt(x * x + y * y));
+
+            print("x is " + x + " y is " + y + " -> " + z + " " + hype);
+
+            if (z > (hype * 0.5))
+                dist = z;
+
+            end = new Vector2Int(x, y);
+        }
+
 
         tileMapController.addOther(start.x, start.y, 2);
         tileMapController.addOther(end.x, end.y, 2);
