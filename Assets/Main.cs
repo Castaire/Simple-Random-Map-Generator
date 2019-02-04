@@ -60,7 +60,7 @@ public class Main : MonoBehaviour
 
             int z = Mathf.FloorToInt(Mathf.Sqrt(x * x + y * y));
 
-            print("x is " + x + " y is " + y + " -> " + z + " " + hype);
+            //print("x is " + x + " y is " + y + " -> " + z + " " + hype);
 
             if (z > (hype * 0.5))
                 dist = z;
@@ -74,7 +74,7 @@ public class Main : MonoBehaviour
         
         tileMapController.checkPath(start, end);
 
-        tileMapController.makeSolvable(start, end);
+        //tileMapController.makeSolvable(start, end);
 
         // create 'player' game object
         player = new GameObject("Player");

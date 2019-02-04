@@ -33,15 +33,30 @@ public class TileMapController : MonoBehaviour
         tilemap = gameObject.GetComponent<Tilemap>();
 
         gameCells = generateCellArray();
-        for(int i = 0; i < 200; i++)
+        /*for(int i = 0; i < 200; i++)
         {
             gameCells = randomize(gameCells);
-        }
+        }*/
 
-        //foreach (Vector2 cell in gameCells)
-        //{
-        //    addCell(Mathf.FloorToInt(cell.x), Mathf.FloorToInt(cell.y));
-        //}
+        /*
+        gameCells.UnionWith(genCircle(2, 4, 1));
+
+        gameCells.UnionWith(genCircle(6, 4, 2));
+
+        gameCells.UnionWith(genCircle(10, 4, 3));
+
+        gameCells.UnionWith(genCircle(14, 4, 4));
+
+        gameCells.UnionWith(genCircle(6, 12, 5));
+
+        gameCells.UnionWith(genCircle(14, 12, 6));
+
+        gameCells.UnionWith(genCircle(24, 12, 7));
+
+        gameCells.UnionWith(genCircle(36, 12, 8));
+        */
+
+        finalize();
     }
 
     public Vector3 getPos(int x, int y)
@@ -312,6 +327,51 @@ public class TileMapController : MonoBehaviour
         return cells;
     }
 
+    public HashSet<Vector2Int> genCircle(int x, int y, int d)
+    {
+        HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
+
+        bool even = (d % 2 == 0);
+
+        int r = d / 2;
+
+        if (even) r--;
+
+        for(int i = x - r; i <= x + r; i++)
+        {
+            for (int j = y - r; j <= y + r; j++)
+            {
+                int a = i - x;
+                int b = j - y;
+                if (a * a + b * b <= r * r)
+                {
+                    cells.Add(new Vector2Int(i, j));
+                    if(even)
+                    {
+                        cells.Add(new Vector2Int(i + 1, j));
+                        cells.Add(new Vector2Int(i, j + 1));
+                        cells.Add(new Vector2Int(i + 1, j + 1));
+                    }
+                }
+            }
+
+        }
+
+        return cells;
+    }
+
+    public HashSet<Vector2Int> clearCircle(int x, int y, int r, HashSet<Vector2Int> cells)
+    {
+        HashSet<Vector2Int> circle = genCircle(x, y, r);
+
+        foreach (Vector2Int cell in circle)
+        {
+            cells.Remove(cell);
+        }
+
+        return cells;
+    }
+
     public HashSet<Vector2Int> randomize(HashSet<Vector2Int> cells)
     {
         int randA = Random.Range(0, 10);
@@ -350,15 +410,11 @@ public class TileMapController : MonoBehaviour
             i++;
         }
 
-        gameCells = clearDiamond(start.x, start.y, 4, gameCells);
-        gameCells = clearDiamond(end.x, end.y, 4, gameCells);
+        finalize();
+    }
 
-        // TBD: clear methods probably shouldn't erase the wall lol
-        gameCells.UnionWith(genBlock(0, 0, height, 1));
-        gameCells.UnionWith(genBlock(0, 0, 1, height));
-        gameCells.UnionWith(genBlock(0, height, height, 1));
-        gameCells.UnionWith(genBlock(width, 0, 1, height));
-
+    public void finalize()
+    {
         foreach (Vector2 cell in gameCells)
         {
             addCell(Mathf.FloorToInt(cell.x), Mathf.FloorToInt(cell.y));
