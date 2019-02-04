@@ -40,7 +40,7 @@ public class Main : MonoBehaviour
 
         //tileMapController.startAutoGenMap();
 
-        int width = 40;
+        int width = 60;
         int height = 25;
 
         tileMapController.startAutoGenMap(width, height);
@@ -73,6 +73,8 @@ public class Main : MonoBehaviour
         tileMapController.addOther(end.x, end.y, 2);
         
         tileMapController.checkPath(start, end);
+
+        tileMapController.makeSolvable(start, end);
 
         // create 'player' game object
         player = new GameObject("Player");

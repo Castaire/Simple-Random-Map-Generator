@@ -19,7 +19,7 @@ public class TileMapController : MonoBehaviour
     private Tilemap tilemap = null;
     private Vector3Int tileMapSize;
 
-    private HashSet<Vector2Int> cells;
+    private HashSet<Vector2Int> gameCells;
 
     public void startAutoGenMap(int w, int h)
     {
@@ -29,44 +29,19 @@ public class TileMapController : MonoBehaviour
     }
 
     public void startAutoGenMap(){
-        //Debug.Log("starting autogeneration process!");
-        
         // set variables
         tilemap = gameObject.GetComponent<Tilemap>();
 
-        cells = generateCellArray();
-
-        //cells.UnionWith(genBlock(3, 1, 2, height - 2));
-        //cells.UnionWith(genBlock(6, 2, 2, height - 2));
-        //cells.UnionWith(genBlock(11, 3, 1, 3));
-        //cells.UnionWith(genBlock(12, 3, 2, 1));
-        //cells.UnionWith(genBlock(12, 5, 1, 1));
-
-
-        cells.UnionWith(genCircle(4, 4, 2));
-
-        cells.UnionWith(genCircle(8, 8, 4));
-
-        cells.UnionWith(genCircle(16, 16, 8));
-
-
-        //cells.UnionWith(genBlock(-1, -7, 4, 15));
-        //cells.UnionWith(genBlock(-13, -2, 27, 2));
-
-        //cells = clearBlock(0, 2, 2, 4, cells);
-        //cells = clearBlock(-6, -2, 1, 2, cells);
-
-        //clearBlock(-10, 1, 4, 4, cells);
-        //clearBlock(4, 1, 4, 4, cells);
-
-        //clearBlock(-1, -4, 2, 1, cells);
-        //cells.UnionWith(genBlock(-8, 3, 2, 2));
-        //cells.UnionWith(genBlock(6, 3, 2, 2));
-
-        foreach (Vector2 cell in cells)
+        gameCells = generateCellArray();
+        for(int i = 0; i < 200; i++)
         {
-            addCell(Mathf.FloorToInt(cell.x), Mathf.FloorToInt(cell.y));
+            gameCells = randomize(gameCells);
         }
+
+        //foreach (Vector2 cell in gameCells)
+        //{
+        //    addCell(Mathf.FloorToInt(cell.x), Mathf.FloorToInt(cell.y));
+        //}
     }
 
     public Vector3 getPos(int x, int y)
@@ -82,7 +57,8 @@ public class TileMapController : MonoBehaviour
 
     public void addCell(int x, int y)
     {
-        tilemap.SetTile(new Vector3Int(x, y, 0), tile);
+        if(x >= 0 && x < width && y >= 0 && y< height)
+            tilemap.SetTile(new Vector3Int(x, y, 0), tile);
     }
 
     public void addOther(int x, int y, int type)
@@ -106,7 +82,7 @@ public class TileMapController : MonoBehaviour
         return Mathf.Abs(goal.y - node.y) + Mathf.Abs(goal.x - node.x);
     }
 
-    public void checkPath(Vector2Int start, Vector2Int goal)
+    public bool checkPath(Vector2Int start, Vector2Int goal)
     {
         print("checkPath from: [" + start.x + "," + start.y + "] -> ["
             + goal.x + "," + goal.y + "]");
@@ -163,7 +139,7 @@ public class TileMapController : MonoBehaviour
             if(max <= 0)
             {
                 print("checkPath: reached max iterations");
-                return;
+                return false;
             }
 
             int currentScore = max_cost;
@@ -201,10 +177,10 @@ public class TileMapController : MonoBehaviour
                 while(current != start)
                 {
                     temp++;
-                    if (temp > 200)
+                    if (temp > 1000)
                     {
                         print("loop exceeded");
-                        return;
+                        return true;
                     }
 
                     current = cameFrom[current.x, current.y];
@@ -212,7 +188,7 @@ public class TileMapController : MonoBehaviour
                     //print("came from [" + current.x + "," + current.y + "]");
                 }
 
-                return;
+                return true;
             }
 
             openSet.Remove(current);
@@ -228,13 +204,13 @@ public class TileMapController : MonoBehaviour
             Vector2Int cellUp = new Vector2Int(current.x, current.y + 1);
             Vector2Int cellDown = new Vector2Int(current.x, current.y - 1);
 
-            if (current.x > 0 && !cells.Contains(cellLeft))
+            if (current.x > 0 && !gameCells.Contains(cellLeft))
                 neighbours.Add(cellLeft);
-            if (current.y > 0 && !cells.Contains(cellDown))
+            if (current.y > 0 && !gameCells.Contains(cellDown))
                 neighbours.Add(cellDown);
-            if(current.x < width - 1  && !cells.Contains(cellRight))
+            if(current.x < width - 1  && !gameCells.Contains(cellRight))
                 neighbours.Add(cellRight);
-            if (current.y < height - 1 && !cells.Contains(cellUp))
+            if (current.y < height - 1 && !gameCells.Contains(cellUp))
                 neighbours.Add(cellUp);
 
             foreach (Vector2Int neighbour in neighbours)
@@ -261,6 +237,8 @@ public class TileMapController : MonoBehaviour
         }
 
         print("checkPath: no path detected");
+
+        return false;
     }
     
     public HashSet<Vector2Int> generateCellArray()
@@ -282,18 +260,6 @@ public class TileMapController : MonoBehaviour
         return set;
     }
 
-    public HashSet<Vector2Int> genCircle(int x, int y, int r)
-    {
-        HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
-        for(int i = 1-r; i < r; i++)
-        {
-            int h = Mathf.FloorToInt(Mathf.Sqrt(r*r - i*i));
-            cells.UnionWith(genBlock(x + i, y - h, 1, 2 * h));
-        }
-
-        return cells;
-    }
-
     public HashSet<Vector2Int> genBlock(int x, int y, int w, int h)
     {
         HashSet<Vector2Int> set = new HashSet<Vector2Int>();
@@ -308,8 +274,7 @@ public class TileMapController : MonoBehaviour
 
         return set;
     }
-
-
+    
     public HashSet<Vector2Int> clearBlock(int x, int y, int w, int h, HashSet<Vector2Int> set)
     {
         for (int i = 0; i < w; i++)
@@ -322,4 +287,81 @@ public class TileMapController : MonoBehaviour
         return set;
     }
 
+    public HashSet<Vector2Int> genDiamond(int x, int y, int r)
+    {
+        HashSet<Vector2Int> cells = new HashSet<Vector2Int>();
+
+        for (int i = 0; i < r; i++)
+        {
+            cells.UnionWith(genBlock(x + i, y + i - r, 1, 2 * (r - i) - 1));
+            cells.UnionWith(genBlock(x - i, y + i - r, 1, 2 * (r - i) - 1));
+        }
+
+        return cells;
+    }
+
+    public HashSet<Vector2Int> clearDiamond(int x, int y, int r, HashSet<Vector2Int> cells)
+    {
+        HashSet<Vector2Int> diamond = genDiamond(x, y, r);
+
+        foreach(Vector2Int cell in diamond)
+        {
+            cells.Remove(cell);
+        }
+
+        return cells;
+    }
+
+    public HashSet<Vector2Int> randomize(HashSet<Vector2Int> cells)
+    {
+        int randA = Random.Range(0, 10);
+
+        int randB = Random.Range(0, width / 5);
+        int randC = Random.Range(0, height / 5);
+
+        int randSmaller = Mathf.Min(randB, randC);
+
+        int x = Random.Range(0, width - 1);
+        int y = Random.Range(0, height - 1);
+        
+         if(randA < 3)
+            cells.UnionWith(genBlock(x, y, randB, randC));
+         else if(randA < 6)
+            cells = clearBlock(x, y, randB, randC, cells);
+         else if(randA < 8)
+            cells.UnionWith(genDiamond(x, y, randSmaller));
+         else
+            cells = clearDiamond(x, y, randSmaller, cells);
+
+        return cells;
+    }
+
+    public void makeSolvable(Vector2Int start, Vector2Int end)
+    {
+        int i = 0;
+        while(checkPath(start, end) == false)
+        {
+            if(i > 2000)
+            {
+                print("ugh fuck it I give up");
+                return;
+            }
+            gameCells = randomize(gameCells);
+            i++;
+        }
+
+        gameCells = clearDiamond(start.x, start.y, 4, gameCells);
+        gameCells = clearDiamond(end.x, end.y, 4, gameCells);
+
+        // TBD: clear methods probably shouldn't erase the wall lol
+        gameCells.UnionWith(genBlock(0, 0, height, 1));
+        gameCells.UnionWith(genBlock(0, 0, 1, height));
+        gameCells.UnionWith(genBlock(0, height, height, 1));
+        gameCells.UnionWith(genBlock(width, 0, 1, height));
+
+        foreach (Vector2 cell in gameCells)
+        {
+            addCell(Mathf.FloorToInt(cell.x), Mathf.FloorToInt(cell.y));
+        }
+    }
 }
