@@ -72,9 +72,9 @@ public class Main : MonoBehaviour
         tileMapController.addOther(start.x, start.y, 2);
         tileMapController.addOther(end.x, end.y, 2);
         
-        tileMapController.checkPath(start, end);
+        //tileMapController.checkPath(start, end);
 
-        //tileMapController.makeSolvable(start, end);
+        tileMapController.makeSolvable(start, end);
 
         // create 'player' game object
         player = new GameObject("Player");

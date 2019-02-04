@@ -33,6 +33,7 @@ public class TileMapController : MonoBehaviour
         tilemap = gameObject.GetComponent<Tilemap>();
 
         gameCells = generateCellArray();
+
         /*for(int i = 0; i < 200; i++)
         {
             gameCells = randomize(gameCells);
@@ -56,7 +57,8 @@ public class TileMapController : MonoBehaviour
         gameCells.UnionWith(genCircle(36, 12, 8));
         */
 
-        finalize();
+
+        //finalize();
     }
 
     public Vector3 getPos(int x, int y)
@@ -99,8 +101,8 @@ public class TileMapController : MonoBehaviour
 
     public bool checkPath(Vector2Int start, Vector2Int goal)
     {
-        print("checkPath from: [" + start.x + "," + start.y + "] -> ["
-            + goal.x + "," + goal.y + "]");
+        //print("checkPath from: [" + start.x + "," + start.y + "] -> ["
+        //    + goal.x + "," + goal.y + "]");
         // max number of steps to get to goal
         int max_cost = 10 * width * height;
         
@@ -259,17 +261,14 @@ public class TileMapController : MonoBehaviour
     public HashSet<Vector2Int> generateCellArray()
     {
         HashSet<Vector2Int> set = new HashSet<Vector2Int>();
-        
-        for(int i = 0; i <= width; i++)
-        {
-            set.Add(new Vector2Int(i, 0));
-            set.Add(new Vector2Int(i, height));
-        }
 
-        for(int i = 0; i < height; i++)
+        for (int i = 0; i <= width; i++)
         {
-            set.Add(new Vector2Int(0, i));
-            set.Add(new Vector2Int(width, i));
+
+            for (int j = 0; j < height; j++)
+            {
+                set.Add(new Vector2Int(i, j));
+            }
         }
 
         return set;
@@ -383,21 +382,29 @@ public class TileMapController : MonoBehaviour
 
         int x = Random.Range(0, width - 1);
         int y = Random.Range(0, height - 1);
-        
-         if(randA < 3)
-            cells.UnionWith(genBlock(x, y, randB, randC));
-         else if(randA < 6)
+
+        if (randA < 6)
+        {
+            print("clearing block at [" + x + "," + y + "] w " +
+                randB + " h " + randC);
             cells = clearBlock(x, y, randB, randC, cells);
-         else if(randA < 8)
-            cells.UnionWith(genDiamond(x, y, randSmaller));
-         else
+        }
+        else
+        {
+            print("clearing diamond at [" + x + "," + y + "] r " +
+                randSmaller);
             cells = clearDiamond(x, y, randSmaller, cells);
+        }
 
         return cells;
     }
 
     public void makeSolvable(Vector2Int start, Vector2Int end)
     {
+
+        gameCells = clearDiamond(start.x, start.y, 8, gameCells);
+        gameCells = clearDiamond(end.x, end.y, 8, gameCells);
+
         int i = 0;
         while(checkPath(start, end) == false)
         {
@@ -408,6 +415,18 @@ public class TileMapController : MonoBehaviour
             }
             gameCells = randomize(gameCells);
             i++;
+        }
+
+        for(int a = 0; a <= width; a++)
+        {
+            gameCells.Add(new Vector2Int(a, 0));
+            gameCells.Add(new Vector2Int(a, height));
+        }
+
+        for(int b = 0; b <= height; b++)
+        {
+            gameCells.Add(new Vector2Int(0, b));
+            gameCells.Add(new Vector2Int(width, b));
         }
 
         finalize();
